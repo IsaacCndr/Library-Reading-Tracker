@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library & Reading Tracker</title>
+  <!-- Modern Clean Typography (Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient backdrop with floating application window -->
+  <div class="window-canvas">
+    <div class="app-window" role="main">
+
+      <!-- Window Top Navigation Bar -->
+      <header class="window-header">
+        <div class="header-identity">
+          <div class="app-avatar" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+          </div>
+          <div class="identity-text">
+            <div class="title-row">
+              <h1 class="window-title">Library Overview</h1>
+              <span class="status-dot-badge">
+                <span class="pulse-dot"></span> Local Storage Synced
+              </span>
+            </div>
+            <p class="window-subtitle" id="window-subtitle">Personal Collection &bull; 0 titles tracked</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button type="button" class="btn-top-action" id="toggle-add-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add New Book</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Tasteful Gradient Insight Banner (Matching Reference Image) -->
+      <section class="insight-banner" aria-label="Reading Insights">
+        <div class="insight-content">
+          <div class="insight-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span>Reading Momentum</span>
+          </div>
+          <div class="insight-text-group">
+            <h2 class="insight-heading" id="insight-title">Start Your Reading Journey</h2>
+            <p class="insight-description" id="insight-desc">
+              Track what you read, discover your pacing, and organize your favorite titles in one clean place.
+            </p>
+          </div>
+        </div>
+        <div class="insight-graphic" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+        </div>
+      </section>
+
+      <!-- Stats Overview Grid (Clean, Meaningful Metrics) -->
+      <section class="stats-overview" aria-label="Library Statistics">
+        <!-- Stat Card 1: Total Books -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-title-group">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+              <span>Total Books</span>
+            </div>
+            <span class="metric-badge-neutral" id="total-badge">0 titles</span>
+          </div>
+          <div class="metric-body">
+            <div class="metric-primary-value" id="stat-total">0</div>
+            <p class="metric-subtext" id="total-subtext">All titles in library</p>
+          </div>
+          <div class="metric-footer-bar">
+            <div class="distribution-track" title="Collection reading ratio">
+              <div class="dist-fill-read" id="dist-fill-read" style="width: 0%;"></div>
+              <div class="dist-fill-unread" id="dist-fill-unread" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat Card 2: Completed / Read -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-title-group">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span>Books Read</span>
+            </div>
+            <div class="trend-pill positive" id="read-trend-pill">
+              <span id="read-percentage">0%</span>
+            </div>
+          </div>
+          <div class="metric-body">
+            <div class="metric-primary-value text-green" id="stat-read">0</div>
+            <p class="metric-subtext" id="read-subtext">0 of 0 completed</p>
+          </div>
+          <div class="metric-footer-bar">
+            <div class="metric-progress-track">
+              <div class="metric-progress-fill" id="read-progress-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat Card 3: Want to Read / In Queue -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <div class="metric-title-group">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Want to Read</span>
+            </div>
+            <span class="metric-badge-amber" id="unread-badge">In Queue</span>
+          </div>
+          <div class="metric-body">
+            <div class="metric-primary-value text-amber" id="stat-unread">0</div>
+            <p class="metric-subtext" id="unread-subtext">Waiting to be read</p>
+          </div>
+          <div class="metric-footer-bar">
+            <div class="metric-subtle-indicator">
+              <span class="indicator-dot amber"></span>
+              <span class="indicator-text" id="unread-indicator-text">Next in reading queue</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Add Book Panel (Clean, Elegant Form with Micro-Labels) -->
+      <section class="add-panel" id="add-panel">
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <span class="section-icon">✍️</span>
+              <h2 class="panel-title">Add a New Book</h2>
+            </div>
+            <button type="button" class="btn-icon-subtle" id="close-add-panel-btn" aria-label="Close add form">&times;</button>
+          </div>
+
+          <form id="add-book-form" class="clean-form" novalidate>
+            <div class="form-grid">
+              <div class="input-field">
+                <label for="book-title" class="field-label">Book Title <span class="required-star">*</span></label>
+                <input 
+                  type="text" 
+                  id="book-title" 
+                  class="field-input" 
+                  placeholder="e.g. To Kill a Mockingbird" 
+                  required 
+                  autocomplete="off"
+                >
+                <span class="field-error" id="title-error"></span>
+              </div>
+
+              <div class="input-field">
+                <label for="book-author" class="field-label">Author <span class="required-star">*</span></label>
+                <input 
+                  type="text" 
+                  id="book-author" 
+                  class="field-input" 
+                  placeholder="e.g. Harper Lee" 
+                  required 
+                  autocomplete="off"
+                >
+                <span class="field-error" id="author-error"></span>
+              </div>
+            </div>
+
+            <div class="form-row-bottom">
+              <label class="stylish-checkbox" for="book-status">
+                <input type="checkbox" id="book-status">
+                <span class="checkbox-box" aria-hidden="true"></span>
+                <span class="checkbox-text">I have already read this book</span>
+              </label>
+
+              <button type="submit" class="btn-primary-dark">
+                <span>Add to Library</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Controls & Filter Toolbar (Segmented Pills matching Reference Image) -->
+      <section class="toolbar-section">
+        <!-- Segmented Filter Control (like 2wk / 1mo / 2mo / 3mo in reference) -->
+        <div class="segmented-control" role="tablist" aria-label="Filter reading status">
+          <button type="button" class="segment-btn active" data-filter="all" role="tab" aria-selected="true">
+            <span>All Books</span>
+            <span class="segment-count" id="count-all">0</span>
+          </button>
+          <button type="button" class="segment-btn" data-filter="read" role="tab" aria-selected="false">
+            <span>Read</span>
+            <span class="segment-count" id="count-read">0</span>
+          </button>
+          <button type="button" class="segment-btn" data-filter="unread" role="tab" aria-selected="false">
+            <span>Not Read</span>
+            <span class="segment-count" id="count-unread">0</span>
+          </button>
+        </div>
+
+        <!-- Search & Sorting Controls -->
+        <div class="search-sort-group">
+          <div class="search-box">
+            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="search" 
+              id="search-input" 
+              class="search-input" 
+              placeholder="Search by title or author..." 
+              autocomplete="off"
+            >
+            <button type="button" id="clear-search-btn" class="clear-btn hidden" aria-label="Clear search">&times;</button>
+          </div>
+
+          <div class="sort-box">
+            <select id="sort-select" class="sort-select" aria-label="Sort books list">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="title-asc">Title (A &rarr; Z)</option>
+              <option value="author-asc">Author (A &rarr; Z)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Books Collection List -->
+      <section class="collection-section">
+        <div class="section-title-bar">
+          <div class="title-with-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            <h2 class="section-heading">Books in Collection</h2>
+          </div>
+          <span class="count-pill" id="filtered-badge">0 items</span>
+        </div>
+
+        <!-- Book Cards Container -->
+        <div id="books-container" class="books-container" role="list"></div>
+
+        <!-- Empty State (When zero books exist) -->
+        <div id="empty-state" class="tasteful-empty-card hidden">
+          <div class="empty-graphic-wrap">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+          </div>
+          <h3 class="empty-title">Your library is empty</h3>
+          <p class="empty-text">
+            You don't have any books listed yet. Add your first title above or click below to populate sample classics.
+          </p>
+          <div class="empty-actions">
+            <button type="button" class="btn-top-action" id="empty-add-btn">
+              + Add a Book
+            </button>
+            <button type="button" class="btn-outline-subtle" id="load-samples-btn">
+              Load Sample Classics
+            </button>
+          </div>
+        </div>
+
+        <!-- No Search Results State -->
+        <div id="no-results-state" class="tasteful-empty-card hidden">
+          <div class="empty-graphic-wrap search-graphic">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <h3 class="empty-title">No matching titles found</h3>
+          <p class="empty-text">We couldn't find any books matching your search or active filter.</p>
+          <button type="button" class="btn-outline-subtle" id="reset-search-btn">Clear Search & Filters</button>
+        </div>
+      </section>
+
+      <!-- App Footer with Local Storage & Backup Options -->
+      <footer class="window-footer">
+        <div class="footer-meta">
+          <span>Encrypted in local browser storage</span>
+        </div>
+        <div class="footer-tools">
+          <button type="button" class="footer-tool-btn" id="export-btn" title="Download backup as JSON">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Export Backup</span>
+          </button>
+          <button type="button" class="footer-tool-btn" id="import-btn" title="Restore books from JSON">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span>Import</span>
+          </button>
+          <input type="file" id="import-file-input" accept=".json" class="hidden">
+        </div>
+      </footer>
+
+    </div><!-- /.app-window -->
+  </div><!-- /.window-canvas -->
+
+  <!-- Edit Book Modal (Styled directly after reference window dialog) -->
+  <div id="edit-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="edit-dialog-title">
+    <div class="modal-window">
+      <div class="modal-topbar">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 id="edit-dialog-title" class="modal-heading">Edit Book Details</h3>
+            <p class="modal-subheading">Update title, author or reading status</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-x" id="close-modal-btn" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <form id="edit-book-form" class="clean-form" novalidate>
+        <input type="hidden" id="edit-book-id">
+
+        <div class="input-field">
+          <label for="edit-title" class="field-label">Book Title <span class="required-star">*</span></label>
+          <input type="text" id="edit-title" class="field-input" required autocomplete="off">
+          <span class="field-error" id="edit-title-error"></span>
+        </div>
+
+        <div class="input-field">
+          <label for="edit-author" class="field-label">Author <span class="required-star">*</span></label>
+          <input type="text" id="edit-author" class="field-input" required autocomplete="off">
+          <span class="field-error" id="edit-author-error"></span>
+        </div>
+
+        <div class="input-field">
+          <label class="stylish-checkbox" for="edit-status">
+            <input type="checkbox" id="edit-status">
+            <span class="checkbox-box" aria-hidden="true"></span>
+            <span class="checkbox-text">Mark as read</span>
+          </label>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-modal-cancel" id="cancel-edit-btn">Cancel</button>
+          <button type="submit" class="btn-primary-dark">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Custom Tasteful Delete Confirmation Modal -->
+  <div id="delete-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="delete-dialog-title">
+    <div class="modal-window modal-window-sm">
+      <div class="modal-topbar">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge badge-danger" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 id="delete-dialog-title" class="modal-heading">Delete Book</h3>
+            <p class="modal-subheading">This action cannot be undone</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-x" id="close-delete-modal-btn" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <p class="delete-prompt-text" id="delete-prompt-text">Are you sure you want to delete this book?</p>
+
+      <div class="modal-footer-actions">
+        <button type="button" class="btn-modal-cancel" id="cancel-delete-btn">Cancel</button>
+        <button type="button" class="btn-danger-solid" id="confirm-delete-btn">Delete Book</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast-notification hidden" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
