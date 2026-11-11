@@ -6,6 +6,7 @@
  * - 100% Client-side with browser localStorage persistence
  * - Real-time statistics, completion progress, dynamic insight banner
  * - Add new books with clean collapsible panel
+ * - Rate books from one to five stars
  * - Direct status toggle (Read / Not Read) from cards
  * - Real-time search & segmented status filtering (All / Read / Not Read)
  * - Sorting by date and alphabetical order
@@ -28,6 +29,7 @@
       title: 'To Kill a Mockingbird',
       author: 'Harper Lee',
       isRead: true,
+      rating: 5,
       createdAt: Date.now() - 86400000 * 4
     },
     {
@@ -35,6 +37,7 @@
       title: '1984',
       author: 'George Orwell',
       isRead: true,
+      rating: 4,
       createdAt: Date.now() - 86400000 * 2
     },
     {
@@ -42,6 +45,7 @@
       title: 'Dune',
       author: 'Frank Herbert',
       isRead: false,
+      rating: 0,
       createdAt: Date.now() - 86400000 * 1
     },
     {
@@ -49,6 +53,7 @@
       title: 'The Great Gatsby',
       author: 'F. Scott Fitzgerald',
       isRead: false,
+      rating: 0,
       createdAt: Date.now()
     }
   ];
@@ -91,6 +96,7 @@
   const titleInput = document.getElementById('book-title');
   const authorInput = document.getElementById('book-author');
   const statusCheckbox = document.getElementById('book-status');
+  const bookRatingPicker = document.getElementById('book-rating-picker');
   const titleError = document.getElementById('title-error');
   const authorError = document.getElementById('author-error');
 
@@ -119,6 +125,7 @@
   const editTitleInput = document.getElementById('edit-title');
   const editAuthorInput = document.getElementById('edit-author');
   const editStatusCheckbox = document.getElementById('edit-status');
+  const editRatingPicker = document.getElementById('edit-rating-picker');
   const editTitleError = document.getElementById('edit-title-error');
   const editAuthorError = document.getElementById('edit-author-error');
   const closeModalBtn = document.getElementById('close-modal-btn');
@@ -140,13 +147,39 @@
   const importFileInput = document.getElementById('import-file-input');
 
   // --- LocalStorage Operations ---
+  function normalizeRating(rating) {
+    return Number.isInteger(rating) && rating >= 1 && rating <= 5 ? rating : 0;
+  }
+
+  function getSelectedRating(picker) {
+    const selected = picker.querySelector('input[type="radio"]:checked');
+    return selected ? normalizeRating(Number(selected.value)) : 0;
+  }
+
+  function setRating(picker, rating) {
+    const normalizedRating = normalizeRating(rating);
+    const options = picker.querySelectorAll('.rating-option');
+    options.forEach((option, index) => {
+      const input = option.querySelector('input');
+      input.checked = Number(input.value) === normalizedRating;
+      option.classList.toggle('is-active', index < normalizedRating);
+    });
+
+    const value = picker.querySelector('.rating-value');
+    value.textContent = normalizedRating ? `${normalizedRating} of 5` : 'Not rated';
+    picker.querySelector('.rating-clear').disabled = normalizedRating === 0;
+  }
+
   function loadBooks() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          books = parsed;
+          books = parsed.map(book => ({ ...book, rating: normalizeRating(book.rating) }));
+          if (parsed.some((book, index) => book.rating !== books[index].rating)) {
+            saveBooks();
+          }
           return;
         }
       }
@@ -334,6 +367,11 @@
       const statusIcon = book.isRead ? '✓' : '📖';
       const statusText = book.isRead ? 'Read' : 'Not Read';
       const toggleTitle = book.isRead ? 'Click to mark as Not Read' : 'Click to mark as Read';
+      const rating = normalizeRating(book.rating);
+      const ratingLabel = rating ? `${rating} of 5` : 'Not rated';
+      const ratingStars = Array.from({ length: 5 }, (_, starIndex) =>
+        `<span class="${starIndex < rating ? 'is-filled' : 'is-empty'}">★</span>`
+      ).join('');
 
       card.innerHTML = `
         <div class="book-left-meta">
@@ -346,6 +384,10 @@
               <span class="author-name">by ${safeAuthor}</span>
               <span class="meta-dot">&bull;</span>
               <span class="added-date">${formatRelativeDate(book.createdAt)}</span>
+            </div>
+            <div class="book-rating">
+              <span class="book-rating-stars" aria-hidden="true">${ratingStars}</span>
+              <span>${ratingLabel}</span>
             </div>
           </div>
         </div>
@@ -406,6 +448,7 @@
     const title = titleInput.value.trim();
     const author = authorInput.value.trim();
     const isRead = statusCheckbox.checked;
+    const rating = getSelectedRating(bookRatingPicker);
 
     let hasError = false;
     titleInput.classList.remove('input-invalid');
@@ -432,6 +475,7 @@
       title: title,
       author: author,
       isRead: isRead,
+      rating: rating,
       createdAt: Date.now()
     };
 
@@ -442,6 +486,7 @@
     titleInput.value = '';
     authorInput.value = '';
     statusCheckbox.checked = false;
+    setRating(bookRatingPicker, 0);
 
     render();
     addPanel.classList.remove('open');
@@ -508,6 +553,7 @@
     editTitleInput.value = book.title;
     editAuthorInput.value = book.author;
     editStatusCheckbox.checked = book.isRead;
+    setRating(editRatingPicker, normalizeRating(book.rating));
 
     editTitleInput.classList.remove('input-invalid');
     editAuthorInput.classList.remove('input-invalid');
@@ -524,6 +570,7 @@
     editTitleInput.value = '';
     editAuthorInput.value = '';
     editStatusCheckbox.checked = false;
+    setRating(editRatingPicker, 0);
   }
 
   function handleSaveEdit(e) {
@@ -533,6 +580,7 @@
     const title = editTitleInput.value.trim();
     const author = editAuthorInput.value.trim();
     const isRead = editStatusCheckbox.checked;
+    const rating = getSelectedRating(editRatingPicker);
 
     let hasError = false;
     editTitleInput.classList.remove('input-invalid');
@@ -559,6 +607,7 @@
       book.title = title;
       book.author = author;
       book.isRead = isRead;
+      book.rating = rating;
       saveBooks();
       render();
     }
@@ -601,7 +650,7 @@
         if (Array.isArray(imported)) {
           const confirmed = window.confirm(`Found ${imported.length} books in this backup. Would you like to restore them to your collection?`);
           if (confirmed) {
-            books = imported;
+            books = imported.map(book => ({ ...book, rating: normalizeRating(book.rating) }));
             saveBooks();
             render();
             alert('Books successfully restored!');
@@ -638,6 +687,14 @@
 
     // Add Form Submit
     addForm.addEventListener('submit', handleAddBook);
+    bookRatingPicker.addEventListener('change', () => setRating(bookRatingPicker, getSelectedRating(bookRatingPicker)));
+    editRatingPicker.addEventListener('change', () => setRating(editRatingPicker, getSelectedRating(editRatingPicker)));
+    bookRatingPicker.addEventListener('click', (e) => {
+      if (e.target.closest('.rating-clear')) setRating(bookRatingPicker, 0);
+    });
+    editRatingPicker.addEventListener('click', (e) => {
+      if (e.target.closest('.rating-clear')) setRating(editRatingPicker, 0);
+    });
 
     // Live validation cleanups
     titleInput.addEventListener('input', () => {

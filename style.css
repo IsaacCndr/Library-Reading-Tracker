@@ -535,6 +535,104 @@ body {
   color: var(--danger-text);
 }
 
+.optional-label {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.rating-fieldset {
+  border: 0;
+  min-width: 0;
+}
+
+.rating-fieldset legend {
+  margin-bottom: 5px;
+}
+
+.rating-control,
+.rating-stars {
+  display: flex;
+  align-items: center;
+}
+
+.rating-control {
+  gap: 10px;
+}
+
+.rating-stars {
+  gap: 2px;
+}
+
+.rating-option {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.rating-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.rating-star {
+  display: block;
+  color: #cbd5e1;
+  font-size: 1.45rem;
+  transition: color 0.15s ease;
+}
+
+.rating-option.is-active .rating-star,
+.rating-option:hover .rating-star {
+  color: var(--chart-orange);
+}
+
+.rating-option input:focus-visible + .rating-star {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.rating-value {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.rating-clear {
+  border: 0;
+  padding: 3px 4px;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.rating-clear:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.rating-clear:disabled {
+  cursor: default;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .field-input {
   width: 100%;
   height: 42px;
@@ -916,6 +1014,26 @@ body {
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
+}
+
+.book-rating {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.book-rating-stars {
+  letter-spacing: 0.04em;
+}
+
+.book-rating-stars .is-filled {
+  color: var(--chart-orange);
+}
+
+.book-rating-stars .is-empty {
+  color: #cbd5e1;
 }
 
 .author-name {

@@ -186,6 +186,41 @@
               </div>
             </div>
 
+            <fieldset class="rating-fieldset">
+              <legend class="field-label">Your Rating <span class="optional-label">Optional</span></legend>
+              <div class="rating-control" id="book-rating-picker">
+                <div class="rating-stars">
+                  <label class="rating-option" for="book-rating-1">
+                    <input type="radio" name="book-rating" id="book-rating-1" value="1">
+                    <span class="rating-star" aria-hidden="true">★</span>
+                    <span class="visually-hidden">1 star</span>
+                  </label>
+                  <label class="rating-option" for="book-rating-2">
+                    <input type="radio" name="book-rating" id="book-rating-2" value="2">
+                    <span class="rating-star" aria-hidden="true">★</span>
+                    <span class="visually-hidden">2 stars</span>
+                  </label>
+                  <label class="rating-option" for="book-rating-3">
+                    <input type="radio" name="book-rating" id="book-rating-3" value="3">
+                    <span class="rating-star" aria-hidden="true">★</span>
+                    <span class="visually-hidden">3 stars</span>
+                  </label>
+                  <label class="rating-option" for="book-rating-4">
+                    <input type="radio" name="book-rating" id="book-rating-4" value="4">
+                    <span class="rating-star" aria-hidden="true">★</span>
+                    <span class="visually-hidden">4 stars</span>
+                  </label>
+                  <label class="rating-option" for="book-rating-5">
+                    <input type="radio" name="book-rating" id="book-rating-5" value="5">
+                    <span class="rating-star" aria-hidden="true">★</span>
+                    <span class="visually-hidden">5 stars</span>
+                  </label>
+                </div>
+                <button type="button" class="rating-clear" disabled>Clear</button>
+                <span class="rating-value" aria-live="polite">Not rated</span>
+              </div>
+            </fieldset>
+
             <div class="form-row-bottom">
               <label class="stylish-checkbox" for="book-status">
                 <input type="checkbox" id="book-status">
@@ -349,7 +384,7 @@
           </div>
           <div>
             <h3 id="edit-dialog-title" class="modal-heading">Edit Book Details</h3>
-            <p class="modal-subheading">Update title, author or reading status</p>
+            <p class="modal-subheading">Update title, author, reading status or rating</p>
           </div>
         </div>
         <button type="button" class="modal-close-x" id="close-modal-btn" aria-label="Close dialog">&times;</button>
@@ -377,6 +412,41 @@
             <span class="checkbox-text">Mark as read</span>
           </label>
         </div>
+
+        <fieldset class="rating-fieldset">
+          <legend class="field-label">Your Rating <span class="optional-label">Optional</span></legend>
+          <div class="rating-control" id="edit-rating-picker">
+            <div class="rating-stars">
+              <label class="rating-option" for="edit-rating-1">
+                <input type="radio" name="edit-rating" id="edit-rating-1" value="1">
+                <span class="rating-star" aria-hidden="true">★</span>
+                <span class="visually-hidden">1 star</span>
+              </label>
+              <label class="rating-option" for="edit-rating-2">
+                <input type="radio" name="edit-rating" id="edit-rating-2" value="2">
+                <span class="rating-star" aria-hidden="true">★</span>
+                <span class="visually-hidden">2 stars</span>
+              </label>
+              <label class="rating-option" for="edit-rating-3">
+                <input type="radio" name="edit-rating" id="edit-rating-3" value="3">
+                <span class="rating-star" aria-hidden="true">★</span>
+                <span class="visually-hidden">3 stars</span>
+              </label>
+              <label class="rating-option" for="edit-rating-4">
+                <input type="radio" name="edit-rating" id="edit-rating-4" value="4">
+                <span class="rating-star" aria-hidden="true">★</span>
+                <span class="visually-hidden">4 stars</span>
+              </label>
+              <label class="rating-option" for="edit-rating-5">
+                <input type="radio" name="edit-rating" id="edit-rating-5" value="5">
+                <span class="rating-star" aria-hidden="true">★</span>
+                <span class="visually-hidden">5 stars</span>
+              </label>
+            </div>
+            <button type="button" class="rating-clear" disabled>Clear</button>
+            <span class="rating-value" aria-live="polite">Not rated</span>
+          </div>
+        </fieldset>
 
         <div class="modal-footer-actions">
           <button type="button" class="btn-modal-cancel" id="cancel-edit-btn">Cancel</button>
